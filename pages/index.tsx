@@ -17,10 +17,10 @@ import { getPosts } from "../services";
 //   },
 // ];
 
-const Home: NextPage = ({ posts }) => {
+const Home = ({ posts }: { posts: Post[] }) => {
   return (
     <>
-      <div className="container mx-auto px-10 mb-8 bg-gray-300">
+      <div className="container mx-auto px-10 mb-8">
         <Head>
           <title>AT Blog App</title>
           <link rel="icon" href="/favicon.ico" />
