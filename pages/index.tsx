@@ -3,20 +3,21 @@ import Head from "next/head";
 import Image from "next/image";
 import { Categories, PostCard, PostWidget } from "../components/index";
 import { Post } from "../models";
+import { getPosts } from "../services";
 
-const posts: Post[] = [
-  {
-    title: "React Testing",
-    excerpt: "React Testing is a great way to test your React components",
-  },
-  {
-    title: "React Testing with Tailwind",
-    excerpt:
-      "React Testing is a great way to test your React components Tailwind",
-  },
-];
+// const posts: Post[] = [
+//   {
+//     title: "React Testing",
+//     excerpt: "React Testing is a great way to test your React components",
+//   },
+//   {
+//     title: "React Testing with Tailwind",
+//     excerpt:
+//       "React Testing is a great way to test your React components Tailwind",
+//   },
+// ];
 
-const Home: NextPage = () => {
+const Home: NextPage = ({ posts }) => {
   return (
     <>
       <div className="container mx-auto px-10 mb-8 bg-gray-300">
@@ -42,5 +43,13 @@ const Home: NextPage = () => {
     </>
   );
 };
+
+export async function getStaticProps() {
+  const posts = (await getPosts()) || [];
+
+  return {
+    props: { posts },
+  };
+}
 
 export default Home;
