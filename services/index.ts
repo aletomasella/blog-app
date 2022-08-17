@@ -1,5 +1,5 @@
 import { request, gql } from "graphql-request";
-import { Post } from "../models";
+import { Comment, Post } from "../models";
 
 const graphqlAPI = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT;
 
@@ -56,7 +56,7 @@ export const getRecentPosts = async () => {
   return results.posts;
 };
 
-export const getSimilarPosts = async (categories: string, slug: string) => {
+export const getSimilarPosts = async (categories: string[], slug: string) => {
   const query = gql`
     query GetPostDetails($slug: String!, $categories: [String!]) {
       posts(
@@ -130,4 +130,16 @@ export const getPostDetails = async (slug: string) => {
     slug,
   });
   return post;
+};
+
+export const submitComment = async (obj: Comment) => {
+  const result = await fetch("/api/comments", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(obj),
+  });
+
+  return result.json();
 };

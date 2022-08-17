@@ -7,7 +7,7 @@ const PostWidget = ({
   categories,
   slug,
 }: {
-  categories: string;
+  categories: string[];
   slug: string;
 }) => {
   const [relatedPosts, setRelatedPosts] = useState([]);

@@ -44,3 +44,11 @@ export interface textType {
   src?: string;
   title?: string;
 }
+
+export interface Comment {
+  id?: string;
+  name: string;
+  email: string;
+  comment: string;
+  slug?: string;
+}
