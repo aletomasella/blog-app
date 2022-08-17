@@ -6,6 +6,7 @@ export interface Post {
   title: string;
   featuredImage: Photo;
   categories: Category[];
+  content: PostContent;
 }
 
 export interface Category {
@@ -22,4 +23,24 @@ export interface Author {
 
 export interface Photo {
   url: string;
+}
+
+export interface PostContent {
+  raw: { children: Child[] };
+}
+
+export interface Child {
+  type: string;
+  children: textType[];
+}
+
+export interface textType {
+  text: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  width?: string;
+  height?: string;
+  src?: string;
+  title?: string;
 }
