@@ -94,3 +94,5 @@ export const getCategories = async () => {
   console.log(results);
   return results.categories;
 };
+
+export const getPostDetails = async (slug: string) => {};

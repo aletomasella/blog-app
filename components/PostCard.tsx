@@ -14,7 +14,7 @@ const PostCard = ({ post }: { post: Post }) => {
         />
       </div>
       <h1 className="transition duration-70 text-center mb-8 cursor-pointer hover:text-pink-600 text-3xl font-semibold">
-        <Link href={`/posts/${post.slug}`}>{post.title}</Link>
+        <Link href={`/post/${post.slug}`}>{post.title}</Link>
       </h1>
       <div className="block lg:flex text-center items-center justify-center mb-8 w-full">
         <div className="flex items-center justify-center mb-4 lg:mb-0 w-full lg:w-auto mr-8">
@@ -51,7 +51,7 @@ const PostCard = ({ post }: { post: Post }) => {
         {post.excerpt}
       </p>
       <div className="text-center">
-        <Link href={`/posts/${post.slug}`}>
+        <Link href={`/post/${post.slug}`}>
           <span className="transition duration-500 transform hover:-translate-y-1 inline-block bg-pink-600 text-lg font-medium rounded-full text-white px-8 py-2 cursor-pointer">
             Continue Reading
           </span>
