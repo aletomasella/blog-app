@@ -3,7 +3,13 @@ import moment from "moment";
 import Link from "next/link";
 import { getRecentPosts, getSimilarPosts } from "../services";
 import { Post } from "../models";
-const PostWidget = ({ categories, slug }: any) => {
+const PostWidget = ({
+  categories,
+  slug,
+}: {
+  categories: string;
+  slug: string;
+}) => {
   const [relatedPosts, setRelatedPosts] = useState([]);
 
   useEffect(() => {
