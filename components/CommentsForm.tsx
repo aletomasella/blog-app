@@ -101,7 +101,7 @@ const CommentsForm = ({ slug }: { slug: string }) => {
           onClick={handleCommentSubmit}
           className="transition duration-500 ease hover:bg-indigo-700 inline-block px-8 py-2 rounded-full text-white bg-pink-500 text-lg"
         >
-          Botton
+          Send Comment
         </button>
         {showSuccessMessage && (
           <span className="text-xl float-right font-semibold mt-3 text-green-400">
