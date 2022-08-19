@@ -205,7 +205,7 @@ export const getCategoryPost = async (slug: string) => {
           cursor
           node {
             author {
-              bio
+              description
               name
               id
               photo {
