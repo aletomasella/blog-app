@@ -1,30 +1,64 @@
-import { createUserSchema } from "../../schema/user.schema";
+import { createUserSchema, requestOtpSchema } from "../../schema/user.schema";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import * as trpc from "@trpc/server";
 import { createRouter } from "../createRouter";
+import { sendLoginEmail } from "../../utilities/mailer";
+import { url } from "../../constants";
+import { encode } from "../../utilities/base64";
 
-export const userRouter = createRouter().mutation("register-user", {
-  input: createUserSchema,
-  async resolve({ ctx, input }) {
-    const { name, email } = input;
+export const userRouter = createRouter()
+  .mutation("register-user", {
+    input: createUserSchema,
+    async resolve({ ctx, input }) {
+      const { name, email } = input;
 
-    try {
-      const user = await ctx.prisma.user.create({
-        data: { name, email },
-      });
-    } catch (e) {
-      if (e instanceof PrismaClientKnownRequestError) {
-        if (e.code === "P2002") {
-          throw new trpc.TRPCError({
-            code: "CONFLICT",
-            message: "User already exists",
-          });
+      try {
+        const user = await ctx.prisma.user.create({
+          data: { name, email },
+        });
+      } catch (e) {
+        if (e instanceof PrismaClientKnownRequestError) {
+          if (e.code === "P2002") {
+            throw new trpc.TRPCError({
+              code: "CONFLICT",
+              message: "User already exists",
+            });
+          }
         }
+        throw new trpc.TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Something went wrong",
+        });
       }
-      throw new trpc.TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Something went wrong",
+    },
+  })
+  .mutation("request-otp", {
+    input: requestOtpSchema,
+    async resolve({ input, ctx }) {
+      const { email, redirect } = input;
+
+      const user = await ctx.prisma.user.findUnique({
+        where: { email },
       });
-    }
-  },
-});
+
+      if (!user) {
+        throw new trpc.TRPCError({
+          code: "NOT_FOUND",
+          message: "User not found",
+        });
+      }
+
+      const token = await ctx.prisma.loginToken.create({
+        data: {
+          redirect,
+          user: { connect: { id: user.id } },
+        },
+      });
+
+      await sendLoginEmail({
+        token: encode(`${token.id}:${user.email}`),
+        email: user.email,
+        url: url,
+      });
+    },
+  });
